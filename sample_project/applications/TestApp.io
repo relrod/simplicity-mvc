@@ -7,5 +7,11 @@ TestApp := Object clone do (
         happy := method(request,
             return ":D"
         )
+        temp := method(request,
+            variables := Map clone do (
+                atPut("version", "0.1")
+            )
+            return Project render("template.html", variables)
+        )
     )
 )

@@ -1,3 +1,6 @@
+// Bring in some addons.
+Regex
+
 // TODO: This won't work if you're not in the project directory.
 // We only want to define the absolute path to the project once, in settings.io
 // and I'm not sure how to make this work with that in mind.
@@ -29,6 +32,29 @@ HTTPRedirect := method(sock, newlocation,
     sock close
     return 301
 )
+
+Project render := method(template, variables,
+    // Load the contents of the template into memory.
+    template := File with("#{Project absolute_path}/templates/#{template}" interpolate) contents asMutable
+    
+    // Scan for all template blocks, things in {{ and }}.
+    blocks := template allMatchesOfRegex("\{\{(.+?)\}\}")
+    
+    // In each block, see if we're dealing with a variable...
+    blocks foreach(codeblock,
+        // Get rid of the surrounding junk.
+        codeblock := codeblock string
+        workable_codeblock := codeblock asMutable replaceSeq(" ", "") betweenSeq("{{", "}}")
+        if(workable_codeblock beginsWithSeq("$"),
+            // Bingo!
+            workable_codeblock := workable_codeblock strip("$")
+            if(variables hasKey(workable_codeblock),
+                template replaceSeq(codeblock, variables at(workable_codeblock))
+            )
+        )
+    )
+)
+        
 
 if(Project devel enable,
 

@@ -1,6 +1,6 @@
 Project := Object clone do (
     name := "sample_project"
-    absolute_path := "/home/ricky/Development/simplicity-mvc/sample_project/"
+    absolute_path := "/home/ricky/sources/simplicity-mvc/sample_project/"
     debug := true // This is NOT related to the Development Environment below.
     applications := list(
         "TestApp"
