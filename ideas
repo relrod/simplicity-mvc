@@ -1,0 +1,11 @@
+So the idea is to have a Django-esque MVC framework written in Io.
+
+Key goals are:
+- Lightweight
+- Cross DB
+  - Within Io, there are already bindings for MySQL, SQLite, SQLite3, and PostgreSQL.
+  - Another option here is to play with NoSQL bindings (this would be instead of the above).
+- Secure
+- Easy to learn
+- Well documented
+- Django-esque
