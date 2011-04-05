@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <title>Simplicity {{ $version }}</title>
+        <style>
+            body {
+                padding: 0;
+                margin: 0;
+                color: #ffffff;
+                font-family: Helvetica, sans-serif;
+            }
+            #bluebar {
+                background-color: #111133;
+                margin-top: 75px;
+                color: #ffffff;
+                font-size: 5.0em;
+                padding: 10px;
+                padding-left: 30px;
+            }
+
+            #greenbar {
+                background-color: #113311;
+                margin-top: 10px;
+                color: #ffffff;
+                font-size: 5.0em;
+                padding: 10px;
+                padding-left: 30px;
+                text-align: center;
+            }
+
+            #redbar {
+                background-color: #551111;
+                margin-top: 10px;
+                color: #ffffff;
+                font-size: 5.0em;
+                padding: 10px;
+                padding-left: 30px;
+                text-align: right;
+            }
+        
+        </style>
+    </head>
+    <body>
+        <div id="bluebar">Simplicity</div>
+        <div id="greenbar">MVC</div>
+        <div id="redbar">Version {{ $version }}</div>
+    </body>
+</html>
