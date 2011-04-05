@@ -62,7 +62,7 @@ if(Project devel enable,
         handleSocket := method(sock,
             sock streamReadNextChunk
             request_path := sock readBuffer betweenSeq("GET ", " HTTP")
-            "Request for: #{request_path}" interpolate println
+            "#{sock ipAddress}: #{request_path}" interpolate println
             
             // Does the request end with /? Should it?
             if(Project devel force_ending_slash and request_path endsWithSeq("/") not,
@@ -89,4 +89,3 @@ if(Project devel enable,
 
 )
 
-urlrouter("TestApp/index") println
