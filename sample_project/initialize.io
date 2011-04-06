@@ -35,7 +35,8 @@ HTTPRedirect := method(sock, newlocation,
 
 Project render := method(template, variables,
     // Load the contents of the template into memory.
-    template := File with("#{Project absolute_path}/templates/#{template}" interpolate) contents asMutable
+    template_path := "#{Project absolute_path}/templates/#{template}" interpolate
+    template := File with(template_path) contents asMutable
     
     // Scan for all template blocks, things in {{ and }}.
     blocks := template allMatchesOfRegex("\{\{(.+?)\}\}")
@@ -48,12 +49,14 @@ Project render := method(template, variables,
         if(workable_codeblock beginsWithSeq("$"),
             // Bingo!
             workable_codeblock := workable_codeblock strip("$")
-            if(variables hasKey(workable_codeblock),
-                template = template replaceSeq(codeblock, variables at(workable_codeblock)),
-                template
+            if(variables hasKey(workable_codeblock)) then (
+                template = template replaceSeq(codeblock, variables at(workable_codeblock))
+            ) else (
+                "The variable `#{workable_codeblock}`, found in #{template_path}, is undefined." interpolate println
             )
         )
     )
+    template
 )
         
 
