@@ -4,7 +4,7 @@ Regex
 // TODO: This won't work if you're not in the project directory.
 // We only want to define the absolute path to the project once, in settings.io
 // and I'm not sure how to make this work with that in mind.
-Lobby doFile("settings.io")
+Lobby doRelativeFile("settings.io")
 
 // Bring in the URLs file.
 Lobby doFile("#{Project absolute_path}/urls.io" interpolate)
