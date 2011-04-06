@@ -49,7 +49,8 @@ Project render := method(template, variables,
             // Bingo!
             workable_codeblock := workable_codeblock strip("$")
             if(variables hasKey(workable_codeblock),
-                template replaceSeq(codeblock, variables at(workable_codeblock))
+                template = template replaceSeq(codeblock, variables at(workable_codeblock)),
+                template
             )
         )
     )
