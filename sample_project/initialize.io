@@ -14,7 +14,9 @@ Project applications foreach(application,
     doFile("#{Project absolute_path}/applications/#{application}.io" interpolate)
 )
 
-urlrouter := method(destination,
+urlrouter := method(sock, request_path,
+    if(Project urls hasKey(request_path) not, return HTTPNotFound(sock))
+    destination := Project urls at(request_path)
     destination := destination split("/")
     called_application := destination at(0)
     if(Project applications contains(called_application) not,
@@ -23,12 +25,21 @@ urlrouter := method(destination,
     )
     called_method := destination at(1)
     if(Project debug, "Routing to #{called_application}.#{called_method}" interpolate println)
+    // TODO: Error checking for method existence.
     Lobby getSlot(called_application) views perform(called_method asString)
 )
 
 HTTPRedirect := method(sock, newlocation,
+    if(Project debug, "Redirecting client to #{newlocation}" interpolate println)
     sock write("HTTP/1.1 301 Moved Permanently\n")
     sock write("Location: #{newlocation}\n" interpolate)
+    sock close
+    return 301
+)
+
+HTTPNotFound := method(sock,
+    if(Project debug, "404: Not Found." println)
+    sock write("HTTP/1.1 404 Not Found\n")
     sock close
     return 301
 )
@@ -71,12 +82,11 @@ if(Project devel enable,
             // Does the request end with /? Should it?
             if(Project devel force_ending_slash and request_path endsWithSeq("/") not,
                 "Slashes forced, and request does not end with a slash. Redirecting." println
-                HTTPRedirect(sock, "#{request_path}/" interpolate)
-                return // Because HTTP* will close the socket.
+                return HTTPRedirect(sock, "#{request_path}/" interpolate)
             )
 
             // Pass it off to the router.
-            response := urlrouter(Project urls at(request_path))
+            response := urlrouter(sock, request_path)
             sock write(response)
             sock close
         )
