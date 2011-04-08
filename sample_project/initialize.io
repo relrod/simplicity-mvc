@@ -85,8 +85,10 @@ if(Project devel enable,
                 return HTTPRedirect(sock, "#{request_path}/" interpolate)
             )
 
-            // Pass it off to the router.
-            response := urlrouter(sock, request_path)
+            // Pass it off to the router, and if we make it back, add in headers.
+            response := "HTTP/1.1 200 OK\n"
+            response = response .. "Server: Simplicity MVC Development Server\n\n"
+            response = response .. urlrouter(sock, request_path)
             sock write(response)
             sock close
         )
